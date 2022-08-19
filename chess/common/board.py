@@ -1,6 +1,6 @@
-from typing import Dict, List, Tuple
-from enums import *
-from exceptions import *
+from typing import List, Tuple
+from common.enums import *
+from common.exceptions import *
 
 class Board:
   """Representation of Chess Board and Pieces"""

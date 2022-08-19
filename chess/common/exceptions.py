@@ -1,4 +1,4 @@
-from enums import *
+from common.enums import *
 
 class PromotionFromPieceIsInvalid(Exception):
   def __init__(self, piece: Piece, message="Cannot promote a non-pawn piece") -> None:
