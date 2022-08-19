@@ -4,6 +4,10 @@ class Color(Enum):
   WHITE = 0
   BLACK = 1
 
+class Condition(Enum):
+  CHECK = auto()
+  CHECKMATE = auto()
+
 class Piece(Enum):
   EMPTY = auto()
   PAWN = auto()
