@@ -25,7 +25,7 @@ class Coord:
     self.__posToCoord(pos)
 
   def __posToCoord(self, pos: str) -> None:
-    self.file = ord((str(pos)[0]).upper()) - ord('A')
+    self.file = ord((str(pos)[0]).lower()) - ord('a')
     self.rank = int(str(pos)[1]) - 1
     self.value = (self.rank, self.file)
   
@@ -37,3 +37,8 @@ class Coord:
 
   def getValue(self) -> Tuple[int, int]:
     return self.value
+
+  def __str__(self) -> str:
+    file = chr(self.file + ord('a'))
+    rank = self.rank + 1
+    return str(file) + str(rank)

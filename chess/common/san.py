@@ -3,39 +3,55 @@ from common.enums import *
 from common.validate import *
 
 class Move:
-  def __init__(self, piece: Piece, fromCoord: Coord, toCoord: Coord):
-    self.piece = piece
+  def __init__(self, fromCoord: Coord, toCoord: Coord):
     self.fromCoord = fromCoord
     self.toCoord = toCoord
 
 class StandardAlgebraicNotation:
+  validator = Validate()
+  condition = Condition.NONE
+  move1, move2 = None, None
+  san = None
+
   def __init__(self, unparsedSAN: str):
     self.san = self.__parseSAN(unparsedSAN)
 
   def __parseSAN(self, unparsedSAN: str):
-    pieces = ['R', 'N', 'B', 'K', 'Q']
-    rank = [str(x+1) for x in range(0,8)]
-    file = [chr(x+ord('a')) for x in range(0,8)]
-    validator = Validate()
+    self.san = unparsedSAN
+    unparsedSAN = self.__checkCheckOrMate(unparsedSAN)
+    unparsedSAN = self.__checkPromotion(unparsedSAN)
+    if unparsedSAN[-1] == 'O':
+      self.__parseCastle(unparsedSAN)
+    else:
+      self.__parseMove(unparsedSAN)
 
-    if unparsedSAN[-1] in pieces:
-      self.__parsePromote()
-    elif unparsedSAN[-1] in pieces:
-      self.__parseMove()
+  def __checkCheckOrMate(self, unparsedSAN: str) -> str:
+    if unparsedSAN[-1] == '#':
+      if self.validator.validateCheckmate():
+        self.condition = Condition.CHECKMATE
+      return unparsedSAN[0:len(unparsedSAN)-1]
     elif unparsedSAN[-1] == '+':
-      validator.validateCheck()
-      self.__parseSAN(unparsedSAN[:-1])
-    elif unparsedSAN[-1] == '#':
-      validator.validateCheckmate()
-      self.__parseSAN(unparsedSAN[:-1])
-    elif unparsedSAN[-1] == 'O':
-      self.__parseCastle()
+      if self.validator.validateCheck():
+        self.condition = Condition.CHECK
+      return unparsedSAN[:-1]
+    else:
+      return unparsedSAN
+    
+  def __checkPromotion(self, unparsedSAN):
+    pieces = ['R', 'N', 'B', 'Q']
+    if unparsedSAN[-1] in pieces and unparsedSAN == '=':
+      self.__parsePromote(unparsedSAN[-1])
+    return unparsedSAN[:-2]
 
-  def __parsePromote(self):
+  def __parsePromote(self, unparsedSAN):
     pass
 
-  def __parseMove(self):
+  def __parseMove(self, unparsedSAN):
     pass
 
-  def __parseCastle(self):
+  def __parseCastle(self, unparsedSAN):
+    '''if unparsedSAN == 'O-O-O':
+      self.move1 = Move()
+    elif unparsedSAN == 'O-O':
+    '''
     pass

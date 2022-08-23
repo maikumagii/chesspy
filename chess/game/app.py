@@ -18,5 +18,6 @@ def run():
   board.makeMove(Coord('G7'), Coord('G1'))
   board.promotePieceAtCoord(Piece.KNIGHT, Coord('G1'))
   board.displayBoard()
+  print(Coord('B7'))
   print(' ')
   board.displayBoard(flip=True)
