@@ -29,7 +29,7 @@ class SelectedPieceIsNone(Exception):
     return f'{self.coord} -> {self.message}'
 
 class PromotionPieceInvalidRank(Exception):
-  def __init__(self, rank: int, message="Can only promote on ranks 1 and 9") -> None:
+  def __init__(self, rank: int, message="Can only promote on ranks 1 and 8") -> None:
     self.rank = rank + 1
     self.message = message
     super().__init__(self.message)

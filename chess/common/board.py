@@ -98,8 +98,22 @@ class Board:
     Returns:
         Tuple[Color, Piece]: Returns a colored piece.
     """
-    rank, file = coord.value
-    return self.__board[file][rank]
+    rank, file = coord.getValue()
+    return self.__board[rank][file]
+
+  def setPieceAtCoord(self, coord: Coord, piece: Tuple[Color, Piece]) -> None:
+    """Returns piece at given coordinate.
+
+    Args:
+        coord (Coord): Enumerated coordinate.
+        pice (Tuple[Color, Piece]): Colored piece to set.
+
+    Returns:
+        None
+    """
+    rank, file = coord.getValue()
+    self.__board[rank][file] = piece
+    return None
 
   def makeMove(self, fromCoord: Coord, toCoord: Coord) -> None:
     """Moves piece 'fromCoord' to 'toCoord'. Does not validate legality.
@@ -115,13 +129,11 @@ class Board:
         None
     """
     fromPiece = self.getPieceAtCoord(fromCoord)
-    fromRank, fromFile = fromCoord.value
-    toRank, toFile = toCoord.value
 
     if fromPiece[1] == None:          raise SelectedPieceIsNone(fromCoord)
     else:
-      self.__board[toFile][toRank] = fromPiece
-      self.__board[fromFile][fromRank] = None
+      self.setPieceAtCoord(fromCoord, None)
+      self.setPieceAtCoord(toCoord, fromPiece)
     return None
 
   def promotePieceAtCoord(self, toPiece: Piece, coord: Coord) -> None:
@@ -141,12 +153,12 @@ class Board:
         None
     """
     fromPiece = self.getPieceAtCoord(coord)
-    rank, file = coord.value
 
-    if toPiece == None:               raise SelectedPieceIsNone(coord)
-    elif toPiece == Piece.PAWN:       raise PromotionToPieceIsInvalid(toPiece)
-    elif fromPiece[1] != Piece.PAWN:  raise PromotionFromPieceIsInvalid(fromPiece)
-    elif rank != 0 or rank != 7:      raise PromotionPieceInvalidRank(rank)
+    print(coord.getRank())
+    if toPiece == None: raise SelectedPieceIsNone(coord)
+    elif toPiece == Piece.PAWN: raise PromotionToPieceIsInvalid(toPiece)
+    elif fromPiece[1] != Piece.PAWN: raise PromotionFromPieceIsInvalid(fromPiece)
+    elif coord.getRank() != 0 and coord.getRank() != 7: raise PromotionPieceInvalidRank(coord.getRank())
     else:
-      self.__board[file][rank] = (fromPiece[0], toPiece)
+      self.setPieceAtCoord(coord, (fromPiece[0], toPiece))
     return None

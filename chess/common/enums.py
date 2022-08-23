@@ -1,4 +1,5 @@
 from enum import *
+from typing import Tuple
 
 class Color(Enum):
   WHITE = 0
@@ -17,76 +18,22 @@ class Piece(Enum):
   KING = auto()
   QUEEN = auto()
 
-class AutoName(Enum):
-  """Overrides auto() _generate_next_value_ by setting the value to (x,y) coords in board"""
-  def _generate_next_value_(name, start, count, last_values):
-    # Translates [A..H] -> [0..7] for file and [1..8] -> [0..7] for
-    file = ord(str(name)[0]) - ord('A')
-    rank = int(str(name)[1]) - 1
-    return (file,rank)
+class Coord:
+  file, rank, value = (0, 0, 0)
 
-class Coord(AutoName):
-  A1 = auto()
-  A2 = auto()
-  A3 = auto()
-  A4 = auto()
-  A5 = auto()
-  A6 = auto()
-  A7 = auto()
-  A8 = auto()
-  B1 = auto()
-  B2 = auto()
-  B3 = auto()
-  B4 = auto()
-  B5 = auto()
-  B6 = auto()
-  B7 = auto()
-  B8 = auto()
-  C1 = auto()
-  C2 = auto()
-  C3 = auto()
-  C4 = auto()
-  C5 = auto()
-  C6 = auto()
-  C7 = auto()
-  C8 = auto()
-  D1 = auto()
-  D2 = auto()
-  D3 = auto()
-  D4 = auto()
-  D5 = auto()
-  D6 = auto()
-  D7 = auto()
-  D8 = auto()
-  E1 = auto()
-  E2 = auto()
-  E3 = auto()
-  E4 = auto()
-  E5 = auto()
-  E6 = auto()
-  E7 = auto()
-  E8 = auto()
-  F1 = auto()
-  F2 = auto()
-  F3 = auto()
-  F4 = auto()
-  F5 = auto()
-  F6 = auto()
-  F7 = auto()
-  F8 = auto()
-  G1 = auto()
-  G2 = auto()
-  G3 = auto()
-  G4 = auto()
-  G5 = auto()
-  G6 = auto()
-  G7 = auto()
-  G8 = auto()
-  H1 = auto()
-  H2 = auto()
-  H3 = auto()
-  H4 = auto()
-  H5 = auto()
-  H6 = auto()
-  H7 = auto()
-  H8 = auto()
+  def __init__(self, pos: str) -> None:
+    self.__posToCoord(pos)
+
+  def __posToCoord(self, pos: str) -> None:
+    self.file = ord((str(pos)[0]).upper()) - ord('A')
+    self.rank = int(str(pos)[1]) - 1
+    self.value = (self.rank, self.file)
+  
+  def getFile(self) -> int:
+    return self.file
+  
+  def getRank(self) -> int:
+    return self.rank
+
+  def getValue(self) -> Tuple[int, int]:
+    return self.value
